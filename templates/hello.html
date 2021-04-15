@@ -1,0 +1,28 @@
+<!-- Llama a la base  -->
+{% extends 'base.html' %}
+<!-- Importar macros -->
+{%import 'macros.html' as macros %}
+<!-- Une los titulos super() llama a la clase principal -->
+{% block title %} 
+  {{super()}} {# traigo el init del bloque principal de base.html #}
+  Bienvenido 
+{% endblock%}
+
+
+
+<!-- Aqui colocas el bloque que se introduce en base.html -->
+{%block content%} 
+<!-- Esto es un if -->
+  {% if user_ip %}
+    <h1>hello world platzi, tu ip es: {{user_ip}}</h1>
+  {%else%}
+    <a href="{{url_for('index')}}">Ir al inicio</a>
+  <!-- Index hace refecencia a '/' -->
+  {%endif%}
+
+  <ul>
+    {% for todo in todos %} 
+      {{macros.render_todo(todo)}} {# Traigo la macros #}
+    {% endfor %}
+  </ul>
+{%endblock%}

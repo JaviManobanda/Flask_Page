@@ -1,0 +1,12 @@
+{%import 'macros.html' as macro%}
+
+{%extends 'base.html'%}
+{%block title%}
+{{super()}}
+    404
+{%endblock%}
+
+
+{%block content%}
+    {{macro.error_page(img = img,message=message,error_code=error)}}
+{% endblock %}

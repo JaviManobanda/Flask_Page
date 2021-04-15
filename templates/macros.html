@@ -1,0 +1,12 @@
+{% macro render_todo(todo) %}
+    <li>Descripción {{todo}}</li>
+{%endmacro%}
+
+
+{%macro error_page(img, message,error_code)%}
+    <section class="error">
+        <img class="error_img--size" src="{{url_for('static',filename=img)}}" alt="imagen error">
+        <h1>{{message}}</h1>
+        <p>{{error_code}}</p>
+    </section>
+{%endmacro%}
