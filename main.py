@@ -1,12 +1,18 @@
 from flask import (Flask,
                    request, make_response,
-                   redirect, render_template)
+                   redirect, render_template,
+                   session)
 
+from flask_bootstrap import Bootstrap
 
 todos = ['Compar cafe', 'Imprimir piezas', 'Reunion de negocios']
 
 app = Flask(__name__)  # crea instancia de flask
+app.config['SECRET_KEY'] = 'SUPER SECRETO'
+
 """ Debes pasar el nombre de la aplicación """
+''' Instanciamos bootstrap '''
+bootstrap = Bootstrap(app)
 
 ''' errorHandler permite manejar el error '''
 @app.errorhandler(404)
@@ -36,14 +42,16 @@ def index():
     # hacer un response y redirecciona
     response = make_response(redirect('/hello'))
     # crea una cookie de la ip del usuario
-    response.set_cookie('user_ip', user_ip)
+    ''' response.set_cookie('user_ip', user_ip) '''
+    session['user_ip'] = user_ip
 
     return response
 
 
 @app.route('/hello')  # decorador que recibe la direccion a ejecutar
 def hello():
-    user_ip = request.cookies.get('user_ip')
+    ''' user_ip = request.cookies.get('user_ip') '''
+    user_ip =  session.get('user_ip')
     # renderizo el tempate
     ctx = {
         'user_ip': user_ip,
@@ -57,4 +65,4 @@ def doError500():
     return qwqwq
 
 if __name__ == "__main__":
-    app.run(debug=0)
+    app.run(debug=1,)
