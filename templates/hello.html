@@ -1,5 +1,6 @@
-<!-- Llama a la base  -->
+<!-- Llama a la base y demas de bootstrap -->
 {% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 <!-- Importar macros -->
 {%import 'macros.html' as macros %}
 <!-- Une los titulos super() llama a la clase principal -->
@@ -13,12 +14,23 @@
 <!-- Aqui colocas el bloque que se introduce en base.html -->
 {%block content%} 
 <!-- Esto es un if -->
+  {%if username%}
+    <h1>Bienvenido {{username | capitalize}}</h1>
+  {%endif%}
   {% if user_ip %}
-    <h1>hello world platzi, tu ip es: {{user_ip}}</h1>
+    <h3>hello world platzi, tu ip es: {{user_ip}}</h3>
   {%else%}
     <a href="{{url_for('index')}}">Ir al inicio</a>
   <!-- Index hace refecencia a '/' -->
   {%endif%}
+
+  <div class="container">
+    <!-- <form action="{{url_for('hello')}}" method="POST">
+      {{loginform.username}}
+      {{loginform.username.label}}
+    </form> -->
+    {{wtf.quick_form(loginform)}}
+  </div>
 
   <ul>
     {% for todo in todos %} 

@@ -10,9 +10,23 @@
     {%block navbar%}
       {% include 'navbar.html'%}
     {%endblock%}
-    
+    <!-- Aqui se despliegan los mensajes -->
+    {% for message in get_flashed_messages()%}
+      <div class="alert alert-success alert-dismissible">
+        <button type="button" data-dismiss="alert" class="close">
+          &times
+        </button>
+        {{message}}
+      </div>
+    {%endfor%}
+
     {% block content%}
     <!-- Aqui llama al bloque de hello.html -->
     {% endblock %}
+
+    <!-- Aqui trae los scripts de bootstraps -->
+    {%block scripts%}
+      {{super()}}
+    {%endblock%}
 {%endblock%}
 
