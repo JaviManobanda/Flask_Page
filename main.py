@@ -1,45 +1,34 @@
 from flask import (Flask, request,
                    make_response, redirect,
-                   render_template, session,url_for,flash)
+                   render_template, session, url_for, flash)
 from flask_wtf import FlaskForm
 import unittest
+from app.forms import LoginForm
 
-# * Se importa los campos del formulario
-from wtforms.fields import (StringField,
-                            PasswordField,
-                            SubmitField)
-from wtforms.validators import DataRequired  # * se coloca validacion de datos
 from flask_bootstrap import Bootstrap  # * para una mejor interfaz UI
 
+from app import create_app
 
 todos = ['Compar cafe', 'Imprimir piezas', 'Reunion de negocios']
 
-app = Flask(__name__)  # ! crea instancia de flask
-app.config['SECRET_KEY'] = 'SUPER SECRETO'
-
-""" Debes pasar el nombre de la aplicación """
-''' Instanciamos bootstrap '''
-bootstrap = Bootstrap(app)
+app = create_app()  # ! Importa de create app
 
 ''' errorHandler permite manejar el error '''
 
 ''' Se crea una clase que extiendo de Flaskform '''
 
 
-class LoginForm(FlaskForm):
-    ''' Se crea los campos del formulario '''
-    username = StringField('Nombre del usuario', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Enviar')
-
 ''' Decoradoe de comandos '''
+
+
 @app.cli.command()
 def test():
     """[summary]
     """
-    #* Busca el directorio con los test
+    # * Busca el directorio con los test
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner().run(tests)
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -75,7 +64,8 @@ def index():
     return response
 
 
-@app.route('/hello',methods=['GET','POST'])  # decorador que recibe la direccion a ejecutar
+# decorador que recibe la direccion a ejecutar
+@app.route('/hello', methods=['GET', 'POST'])
 def hello():
     ''' user_ip = request.cookies.get('user_ip') '''
     user_ip = session.get('user_ip')
@@ -87,16 +77,16 @@ def hello():
         'user_ip': user_ip,
         'todos': todos,
         'loginform': loginform,
-        'username':username
+        'username': username
     }
-    
+
     ''' oBTENER DATOS DE LA FORMA '''
     if loginform.validate_on_submit():
         username = loginform.username.data
         session['username'] = username
         flash('Nombre del usuario registrado con exito')
         return redirect(url_for('index'))
-        
+
     return render_template('hello.html', **ctx)
     # y envio la ip
 
