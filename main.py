@@ -1,26 +1,17 @@
 from flask import (Flask, request,
                    make_response, redirect,
                    render_template, session, url_for, flash)
-from flask_wtf import FlaskForm
 import unittest
 from app.forms import LoginForm
+from flask_login import login_required, current_user #* require para el login
 
-from flask_bootstrap import Bootstrap  # * para una mejor interfaz UI
-
+#* importamos bas de firestore
+from app.firestore_service import get_users, get_todos
 from app import create_app
-
-todos = ['Compar cafe', 'Imprimir piezas', 'Reunion de negocios']
 
 app = create_app()  # ! Importa de create app
 
-''' errorHandler permite manejar el error '''
-
-''' Se crea una clase que extiendo de Flaskform '''
-
-
 ''' Decoradoe de comandos '''
-
-
 @app.cli.command()
 def test():
     """[summary]
@@ -30,6 +21,7 @@ def test():
     unittest.TextTestRunner().run(tests)
 
 
+''' errorHandler permite manejar el error '''
 @app.errorhandler(404)
 def not_found(error):
     img = 'images/Scarecrow.png'
@@ -64,18 +56,19 @@ def index():
     return response
 
 
-# decorador que recibe la direccion a ejecutar
+#* decorador que recibe la direccion a ejecutar
 @app.route('/hello', methods=['GET'])
+@login_required #* decorador de login
 def hello():
     user_ip = session.get('user_ip')
-    username = session.get('username')
+    username = current_user.id
     ''' Creo instancia del form '''
     ctx = {
         'user_ip': user_ip,
-        'todos': todos,
+        'todos': get_todos(user_id = username),
         'username': username
     }
-
+    
     return render_template('hello.html', **ctx)
 
 
