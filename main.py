@@ -65,30 +65,18 @@ def index():
 
 
 # decorador que recibe la direccion a ejecutar
-@app.route('/hello', methods=['GET', 'POST'])
+@app.route('/hello', methods=['GET'])
 def hello():
-    ''' user_ip = request.cookies.get('user_ip') '''
     user_ip = session.get('user_ip')
     username = session.get('username')
     ''' Creo instancia del form '''
-    loginform = LoginForm()
-    # renderizo el tempate
     ctx = {
         'user_ip': user_ip,
         'todos': todos,
-        'loginform': loginform,
         'username': username
     }
 
-    ''' oBTENER DATOS DE LA FORMA '''
-    if loginform.validate_on_submit():
-        username = loginform.username.data
-        session['username'] = username
-        flash('Nombre del usuario registrado con exito')
-        return redirect(url_for('index'))
-
     return render_template('hello.html', **ctx)
-    # y envio la ip
 
 
 @app.route('/error500')

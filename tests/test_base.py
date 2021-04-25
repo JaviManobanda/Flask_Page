@@ -25,21 +25,31 @@ class mainTest(TestCase):
         self.assert200(response)
 
     def test_hello_post(self):
-        fake_form = {
-            'username': 'fake',
-            'password': 'fake_password'
-        }
-        response = self.client.post(url_for('hello'), data=fake_form)
-        self.assertRedirects(response, url_for('index'))
+        #fake_form = {
+        #     'username': 'fake',
+        #     'password': 'fake_password'
+        # }
+        # self.assertRedirects(response, url_for('index'))
+        response = self.client.post(url_for('hello'))
+        self.assertTrue(response.status_code, 405)
+
 
     def test_auth_blueprint_exist(self):
+        # ! verifica si existe el blueprint
         self.assertIn('auth', self.app.blueprints)
 
     def test_auth_login_get(self):
         response = self.client.get(url_for('auth.login'))  # verifica al auth
         self.assert200(response)
 
+    def test_auth_login_template(self):
+        self.client.get(url_for('auth.login'))
+        self.assertTemplateUsed('login.html')
 
-'''   def test_auth_login_template(self):
-        response = self.client.get(url_for('auth.login'))  # verifica al auth
-        self.assertTemplateUsed(response,'login.html') '''
+    def test_outh_login_post(self):
+        fake_form = {
+             'username': 'fake',
+             'password': 'fake_password'
+         }
+        response = self.client.post(url_for('auth.login'),data=fake_form)
+        self.assertRedirects(response, url_for('index'))
