@@ -13,20 +13,27 @@
 
 <!-- Aqui colocas el bloque que se introduce en base.html -->
 {%block content%} 
-<!-- Esto es un if -->
+<section class="hello_container">
+  <!-- Esto es un if -->
   {%if username%}
-    <h1>Bienvenido {{username | capitalize}}</h1>
+    <h1 class="hello_title">Bienvenid@ {{username | capitalize}}</h1>
+    <img src="{{url_for('static',filename='images/Hello.svg')}}" alt="">
   {%endif%}
   {% if user_ip %}
-    <h3>hello world platzi, tu ip es: {{user_ip}}</h3>
+    <h3>Tu Ip es: {{user_ip}}</h3>
   {%else%}
     <a href="{{url_for('index')}}">Ir al inicio</a>
   <!-- Index hace refecencia a '/' -->
   {%endif%}
+</section>
 
-  <ul>
+  <div class="container">
+    <h2>Crear nueva tarea</h2>
+    {{wtf.quick_form(todo_form)}}
+  </div>
+  <ul class="list-group">
     {% for todo in todos %} 
-      {{macros.render_todo(todo)}} {# Traigo la macros #}
+      {{macros.render_todo(todo, delete_form, updateform)}} {# Traigo la macros #}
     {% endfor %}
   </ul>
 {%endblock%}

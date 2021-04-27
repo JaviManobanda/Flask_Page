@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block title %}
+    {{super()}} 
+    Login
+{% endblock %}
+
+{% block content %}
+    <div class="register-container">
+        <div class="register_title">
+            <h1>Registre una cuenta nueva</h1>
+            <img src="{{url_for('static',filename='images/new.svg')}}" alt="register">
+        </div>
+        <div class="container_form-Register">
+            {{wtf.quick_form(signup_form)}}
+        </div>
+    </div>
+{% endblock %}

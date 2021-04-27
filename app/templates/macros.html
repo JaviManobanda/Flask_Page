@@ -1,5 +1,28 @@
-{% macro render_todo(todo) %}
-    <li>Descripción {{todo.to_dict().description}}</li>
+{% import 'bootstrap/wtf.html' as wtf %}
+{% macro render_todo(todo, delete_form, updateform) %}
+    <li class="list-group-item">
+        <div class="items">
+            Tarea: {{todo.to_dict().description}}
+            <span class="
+                {% if todo.to_dict().done == True %}
+                    Babge-finish
+                {%else%}
+                    badge
+                {%endif%}
+                ">
+                {% if todo.to_dict().done == True %}
+                    finish
+                {%else%}
+                    to-do
+                {%endif%}
+            </span>
+        </div>
+
+        <div class="options">
+            {{wtf.quick_form(delete_form, action = url_for('delete',todo_id = todo.id), extra_classes='btn-delete')}}
+            {{wtf.quick_form(updateform, action = url_for('update',todo_id = todo.id, done = todo.to_dict().done), extra_classes='btn-update')}}
+        </div>
+    </li>
 {%endmacro%}
 
 

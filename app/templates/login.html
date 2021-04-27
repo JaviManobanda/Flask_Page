@@ -6,7 +6,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+<div class="login_container">
+    <picture>
+        <img src="{{url_for('static', filename ='images/regist.svg')}}" alt="Image Login">
+    </picture>
+    <div class="container_form">
         {{wtf.quick_form(loginform)}}
+        <a href="{{url_for('auth.signup')}}">Registrarse</a>
     </div>
+</div>
+
 {% endblock %}
